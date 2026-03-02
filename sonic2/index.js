@@ -116,9 +116,9 @@ var Module = typeof Module != 'undefined' ? Module : {};
 
 if (!fetched) {
   var PART_NAMES = [
-    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part0',
-    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part1',
-    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part2',
+    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/sonic2/index.data.part0',
+    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/sonic2/index.data.part1',
+    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/sonic2/index.data.part2',
   ];
         var partBuffers = [null, null, null];
         var partsLoaded = 0;
