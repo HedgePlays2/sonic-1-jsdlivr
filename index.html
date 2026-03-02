@@ -5,8 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Sonic the Hedgehog</title>
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/UGBONTOP/ugs-soniccd@main/image_2026-02-28_164525280.png" type="image/png">
+    <title>cool ixl work</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,24 +13,10 @@
         #canvasWrapper { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; background: black; z-index: 1; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         canvas { display: block; position: absolute; image-rendering: pixelated; image-rendering: crisp-edges; -ms-interpolation-mode: nearest-neighbor; outline: none; }
         #output { display: none; }
-        #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000 url('https://cdn.jsdelivr.net/gh/UGBONTOP/ugs-soniccd@main/image_2026-02-28_165116299.png') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
+        #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
         #loading-screen.fade-out { opacity: 0; pointer-events: none; }
         #loading-screen.hidden { display: none; }
-        .loading-content { width: 80%; max-width: 600px; display: flex; flex-direction: column; align-items: flex-start; }
-        .loading-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px; }
-        .title-group { display: flex; align-items: center; gap: 10px; }
-        .mini-favicon { width: 24px; height: 24px; border-radius: 4px; }
-        .loading-title { color: #fff; font-size: 16px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .loading-mb { color: #fff; font-size: 14px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .loading-bar-container { width: 100%; height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .loading-bar { width: 0%; height: 100%; background: #fff; border-radius: 10px; transition: width 0.3s ease-out; }
-        .loading-text { font-size: 13px; color: #fff; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); height: 1.2em; }
-        .loading-dots { position: absolute; bottom: 40%; display: flex; gap: 8px; }
-        .dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; animation: dot-pulse 1.5s infinite ease-in-out; box-shadow: 0 0 5px rgba(255,255,255,0.5); }
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes dot-pulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
-        .ownership-footer { position: absolute; bottom: 25px; width: 100%; text-align: center; color: rgba(255,255,255,0.7); font-size: 11px; padding: 0 20px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .loading-mb { color: #eee; font-size: 15px; font-weight: 700; }
         .control-panel { position: fixed; top: 15px; right: 15px; z-index: 1001; }
         .game-btn { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: white; padding: 8px 12px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(4px); transition: all 0.2s; min-width: 130px; font-family: 'Inter', sans-serif; }
     </style>
@@ -42,19 +27,7 @@
     </div>
 
     <div id="loading-screen">
-        <div class="loading-content">
-            <div class="loading-header">
-                <div class="title-group">
-                    <img src="https://cdn.jsdelivr.net/gh/UGBONTOP/ugs-soniccd@main/image_2026-02-28_164525280.png" class="mini-favicon" alt="icon">
-                    <div class="loading-title">Sonic 1 (html by crunch arcade)</div>
-                </div>
-                <div class="loading-mb" id="mb-text">0.0MB of 75.0MB</div>
-            </div>
-            <div class="loading-bar-container"><div class="loading-bar" id="loading-bar"></div></div>
-            <div class="loading-text" id="loading-text">initializing...</div>
-        </div>
-        <div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-        <div class="ownership-footer">crunch arcade owns this btw</div>
+        <div class="loading-mb" id="mb-text">0.0 MB / 75.0 MB</div>
     </div>
 
     <div class="control-panel">
@@ -69,9 +42,7 @@
         var totalSizeMB = 75.0;
 
         function finishLoading() {
-            $('loading-bar').style.width = '100%';
-            $('mb-text').textContent = totalSizeMB.toFixed(1) + 'MB of ' + totalSizeMB.toFixed(1) + 'MB';
-            $('loading-text').textContent = 'ready!';
+            $('mb-text').textContent = totalSizeMB.toFixed(1) + ' MB / ' + totalSizeMB.toFixed(1) + ' MB';
             setTimeout(() => {
                 $('loading-screen').classList.add('fade-out');
                 $('loading-screen').addEventListener('transitionend', () => $('loading-screen').classList.add('hidden'), { once: true });
@@ -83,46 +54,6 @@
             else document.exitFullscreen();
         };
 
-// ── Audio Unlock ──
-function unlockAudio() {
-    // Resume any suspended AudioContext
-    if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
-        var AC = typeof AudioContext !== 'undefined' ? AudioContext : webkitAudioContext;
-        // Hook future AudioContext creation so they auto-resume on gesture
-        var origAC = window.AudioContext || window.webkitAudioContext;
-        var patchAC = function() {
-            var ctx = new origAC(...arguments);
-            ctx.resume();
-            return ctx;
-        };
-        patchAC.prototype = origAC.prototype;
-        if (window.AudioContext) window.AudioContext = patchAC;
-        if (window.webkitAudioContext) window.webkitAudioContext = patchAC;
-    }
-
-    // Resume any existing AudioContexts SDL/Emscripten already created
-    function resumeAll() {
-        if (window.SDL && SDL.audioContext) {
-            SDL.audioContext.resume().then(() => console.log('[Audio] SDL context resumed, state:', SDL.audioContext.state));
-        }
-        // Emscripten sometimes stores it here
-        if (window.AL && AL.currentCtx && AL.currentCtx.ctx) {
-            AL.currentCtx.ctx.resume().then(() => console.log('[Audio] AL context resumed'));
-        }
-    }
-
-    resumeAll();
-    // Also try a moment later in case SDL initializes after the first click
-    setTimeout(resumeAll, 500);
-    setTimeout(resumeAll, 1500);
-}
-
-// Trigger on any user interaction
-['click', 'keydown', 'touchstart'].forEach(e =>
-    document.addEventListener(e, unlockAudio, { once: false, passive: true })
-);
-
-        // ── Canvas Scaling ──
         (function() {
             const BASE_W = 848, BASE_H = 480;
             function applyFit(el) {
@@ -139,10 +70,9 @@ function unlockAudio() {
             setInterval(() => document.querySelectorAll('canvas').forEach(applyFit), 1000);
         })();
 
-        // ── Save System ──
         var DB_NAME = 'sonic1-saves', STORE_NAME = 'files';
         var _saveDB = null;
-        var _savePath = null;   // real path detected at runtime
+        var _savePath = null; 
         var _saveTimer = null;
 
         function openSaveDB(cb) {
@@ -177,14 +107,12 @@ function unlockAudio() {
         }
 
         function installWriteHooks() {
-            // Hook close — most reliable trigger
             var origClose = FS.close;
             FS.close = function(stream) {
                 var res = origClose.apply(this, arguments);
                 if (stream && stream.path && stream.path.includes('SData')) scheduleSave();
                 return res;
             };
-            // Hook write as fallback, debounced
             var origWrite = FS.write;
             FS.write = function(stream, buffer, offset, length, position) {
                 var res = origWrite.apply(this, arguments);
@@ -194,7 +122,6 @@ function unlockAudio() {
             console.log('[Save] Write hooks installed');
         }
 
-        // preRun: Emscripten calls this and WAITS if we add a dependency
         function preRunRestore() {
             Module.addRunDependency('idb-restore');
             openSaveDB(db => {
@@ -229,9 +156,7 @@ function unlockAudio() {
                 var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
                 if (m) {
                     var percent = Math.round((parseFloat(m[2]) / parseFloat(m[4])) * 100);
-                    $('loading-bar').style.width = percent + '%';
-                    $('mb-text').textContent = (percent / 100 * totalSizeMB).toFixed(1) + 'MB of ' + totalSizeMB.toFixed(1) + 'MB';
-                    $('loading-text').textContent = "downloading game data...";
+                    $('mb-text').textContent = (percent / 100 * totalSizeMB).toFixed(1) + ' MB / ' + totalSizeMB.toFixed(1) + ' MB';
                 }
             }
         };
