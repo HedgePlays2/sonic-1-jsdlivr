@@ -114,11 +114,12 @@ var Module = typeof Module != 'undefined' ? Module : {};
  var fetchedCallback = null;
       var fetched = Module['getPreloadedPackage'] ? Module['getPreloadedPackage'](REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE) : null;
 
-      if (!fetched) {
-          REMOTE_PACKAGE_BASE + 'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part0',
-          REMOTE_PACKAGE_BASE + 'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part1',
-          REMOTE_PACKAGE_BASE + 'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part2',
-        ];
+if (!fetched) {
+  var PART_NAMES = [
+    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part0',
+    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part1',
+    'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part2',
+  ];
         var partBuffers = [null, null, null];
         var partsLoaded = 0;
         PART_NAMES.forEach(function(partName, i) {
