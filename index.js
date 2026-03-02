@@ -115,7 +115,6 @@ var Module = typeof Module != 'undefined' ? Module : {};
       var fetched = Module['getPreloadedPackage'] ? Module['getPreloadedPackage'](REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE) : null;
 
       if (!fetched) {
-        var PART_NAMES = [
           REMOTE_PACKAGE_BASE + 'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part0',
           REMOTE_PACKAGE_BASE + 'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part1',
           REMOTE_PACKAGE_BASE + 'https://cdn.jsdelivr.net/gh/UGBONTOP/sonic-1-jsdlivr@main/index.data.part2',
