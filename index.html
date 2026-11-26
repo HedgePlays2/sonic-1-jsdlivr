@@ -19,6 +19,24 @@
         .loading-mb { color: #eee; font-size: 15px; font-weight: 700; }
         .control-panel { position: fixed; top: 15px; right: 15px; z-index: 1001; }
         .game-btn { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: white; padding: 8px 12px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(4px); transition: all 0.2s; min-width: 130px; font-family: 'Inter', sans-serif; }
+
+        /* Mobile touch controls */
+        #touch-toggle { position:fixed; left:15px; top:15px; z-index:1002; }
+        #touch-controls { position:fixed; inset:auto 0 18px 0; z-index:1002; display:none; align-items:flex-end; justify-content:space-between; padding:0 22px; pointer-events:none; touch-action:none; }
+        #touch-controls.visible { display:flex; }
+        .touch-cluster { display:flex; gap:10px; align-items:flex-end; pointer-events:auto; }
+        .touch-key { width:clamp(58px, 13vw, 82px); height:clamp(58px, 13vw, 82px); border:2px solid rgba(255,255,255,.55); border-radius:15px; background:rgba(25,35,48,.68); color:#fff; font:900 27px Inter,sans-serif; text-shadow:0 2px 4px #000; box-shadow:0 4px 0 rgba(0,0,0,.35); -webkit-tap-highlight-color:transparent; user-select:none; touch-action:none; }
+        .touch-key.jump { width:clamp(70px, 16vw, 98px); height:clamp(70px, 16vw, 98px); border-radius:50%; background:rgba(0,125,255,.72); font-size:15px; }
+        .touch-key:active, .touch-key.pressed { transform:translateY(3px); background:rgba(0,150,255,.9); box-shadow:0 1px 0 rgba(0,0,0,.35); }
+        #touch-toggle { min-width:auto; width:auto; }
+        @media (pointer:coarse), (max-width:700px) {
+            #touch-controls.visible { display:flex; }
+        }
+        @media (orientation:landscape) and (max-height:500px) {
+            #touch-controls { bottom:8px; padding:0 14px; }
+            .touch-key { width:58px; height:58px; }
+            .touch-key.jump { width:68px; height:68px; }
+        }
     </style>
 </head>
 <body>
@@ -28,6 +46,17 @@
 
     <div id="loading-screen">
         <div class="loading-mb" id="mb-text">0.0 MB / 75.0 MB</div>
+    </div>
+
+    <button id="touch-toggle" class="game-btn" type="button" aria-pressed="false">Touch Controls: OFF</button>
+    <div id="touch-controls" aria-label="Touch controls">
+        <div class="touch-cluster">
+            <button class="touch-key" type="button" data-key="ArrowLeft" aria-label="Move left">◀</button>
+            <button class="touch-key" type="button" data-key="ArrowRight" aria-label="Move right">▶</button>
+        </div>
+        <div class="touch-cluster">
+            <button class="touch-key jump" type="button" data-key="Space" aria-label="Jump">JUMP</button>
+        </div>
     </div>
 
     <div class="control-panel">
@@ -48,6 +77,65 @@
                 $('loading-screen').addEventListener('transitionend', () => $('loading-screen').classList.add('hidden'), { once: true });
             }, 400);
         }
+
+        // Touch controls send the same keyboard events used by the game.
+        (function setupTouchControls() {
+            const panel = $('touch-controls');
+            const toggle = $('touch-toggle');
+            const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+            let enabled = coarsePointer;
+            const activePointers = new Map();
+
+            function setEnabled(value) {
+                enabled = value;
+                panel.classList.toggle('visible', enabled);
+                toggle.textContent = 'Touch Controls: ' + (enabled ? 'ON' : 'OFF');
+                toggle.setAttribute('aria-pressed', String(enabled));
+                if (!enabled) releaseAll();
+            }
+            function keyEvent(type, code) {
+                const isSpace = code === 'Space';
+                const key = isSpace ? ' ' : code;
+                const keyCode = isSpace ? 32 : (code === 'ArrowLeft' ? 37 : 39);
+                document.dispatchEvent(new KeyboardEvent(type, {
+                    key, code, bubbles:true, cancelable:true,
+                    keyCode, which:keyCode
+                }));
+            }
+            function releaseAll() {
+                activePointers.forEach(code => keyEvent('keyup', code));
+                activePointers.clear();
+                panel.querySelectorAll('.pressed').forEach(button => button.classList.remove('pressed'));
+            }
+            toggle.addEventListener('click', () => setEnabled(!enabled));
+            panel.querySelectorAll('[data-key]').forEach(button => {
+                const code = button.dataset.key;
+                button.addEventListener('contextmenu', event => event.preventDefault());
+                button.addEventListener('pointerdown', event => {
+                    if (!enabled) return;
+                    event.preventDefault();
+                    button.setPointerCapture?.(event.pointerId);
+                    if (!activePointers.has(event.pointerId)) {
+                        activePointers.set(event.pointerId, code);
+                        button.classList.add('pressed');
+                        keyEvent('keydown', code);
+                    }
+                });
+                const release = event => {
+                    if (!activePointers.has(event.pointerId)) return;
+                    event.preventDefault();
+                    activePointers.delete(event.pointerId);
+                    button.classList.remove('pressed');
+                    if (![...activePointers.values()].includes(code)) keyEvent('keyup', code);
+                };
+                button.addEventListener('pointerup', release);
+                button.addEventListener('pointercancel', release);
+                button.addEventListener('lostpointercapture', release);
+            });
+            window.addEventListener('blur', releaseAll);
+            document.addEventListener('visibilitychange', () => { if (document.hidden) releaseAll(); });
+            setEnabled(enabled);
+        })();
 
         $('fullscreen-button').onclick = () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
