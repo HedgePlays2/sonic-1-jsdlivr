@@ -32,7 +32,9 @@
         .touch-cluster.directional .down { grid-column:2; grid-row:2; }
         .touch-cluster.directional [data-key="ArrowRight"] { grid-column:3; grid-row:2; }
         .touch-key { width:clamp(58px, 13vw, 82px); height:clamp(58px, 13vw, 82px); border:2px solid rgba(255,255,255,.55); border-radius:15px; background:rgba(25,35,48,.68); color:#fff; font:900 27px Inter,sans-serif; text-shadow:0 2px 4px #000; box-shadow:0 4px 0 rgba(0,0,0,.35); -webkit-tap-highlight-color:transparent; user-select:none; touch-action:none; }
-        .touch-key.jump { width:clamp(70px, 16vw, 98px); height:clamp(70px, 16vw, 98px); border-radius:50%; background:rgba(0,125,255,.72); font-size:15px; }
+        .touch-key.jump, .touch-key.action { width:clamp(70px, 16vw, 98px); height:clamp(70px, 16vw, 98px); border-radius:50%; font-size:15px; }
+        .touch-key.jump { background:rgba(0,125,255,.72); }
+        .touch-key.action { background:rgba(0,150,85,.78); }
         .touch-key:active, .touch-key.pressed { transform:translateY(3px); background:rgba(0,150,255,.9); box-shadow:0 1px 0 rgba(0,0,0,.35); }
         #touch-toggle { min-width:auto; width:auto; }
         @media (pointer:coarse), (max-width:700px) {
@@ -64,6 +66,7 @@
         </div>
         <div class="touch-cluster">
             <button class="touch-key jump" type="button" data-key="Space" aria-label="Jump">JUMP</button>
+            <button class="touch-key action" type="button" data-key="Enter" aria-label="Action">ACTION</button>
         </div>
     </div>
 
@@ -104,7 +107,7 @@
             function keyEvent(type, code) {
                 const isSpace = code === 'Space';
                 const key = isSpace ? ' ' : code;
-                const keyCodes = { ArrowLeft:37, ArrowUp:38, ArrowRight:39, ArrowDown:40 };
+                const keyCodes = { ArrowLeft:37, ArrowUp:38, ArrowRight:39, ArrowDown:40, Enter:13 };
                 const keyCode = isSpace ? 32 : keyCodes[code];
                 $('canvas').dispatchEvent(new KeyboardEvent(type, {
                     key, code, bubbles:true, cancelable:true,
