@@ -97,7 +97,7 @@
                 const isSpace = code === 'Space';
                 const key = isSpace ? ' ' : code;
                 const keyCode = isSpace ? 32 : (code === 'ArrowLeft' ? 37 : 39);
-                document.dispatchEvent(new KeyboardEvent(type, {
+                $('canvas').dispatchEvent(new KeyboardEvent(type, {
                     key, code, bubbles:true, cancelable:true,
                     keyCode, which:keyCode
                 }));
